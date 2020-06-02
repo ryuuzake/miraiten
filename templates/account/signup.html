@@ -1,0 +1,58 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block head_title %}{% trans "Register" %}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-10 col-xl-9 mx-auto">
+    <div class="card card-signin flex-row my-">
+      <div class="card-img-left d-none d-md-flex">
+        <!-- Background image for card set in CSS! -->
+      </div>
+      <div class="card-body">
+        <img src="{% static 'img/Untitled-3.png' %}" width="250" height="60" alt="" loading="lazy">
+        <h3 class="card-title text-center">{% trans "Register" %}</h3>
+        <form class="form-signin signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+
+          {% for field in form %}
+          <div class="form-label-group">
+            {% if field.errors or field == form.password2 and form.password1.errors %}
+              {{ field|add_class:'form-control is-invalid' }}
+            {% elif form.errors %}
+              {{ field|add_class:'form-control is-valid' }}
+            {% else %}
+              {{ field|add_class:'form-control' }}
+            {% endif %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+            {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+
+          <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">{% trans "Register" %}</button>
+          <a class="d-block text-center mt-2 small" href="{% url 'account_login' %}">Already have account? Sign In</a>
+          <hr class="my-4">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

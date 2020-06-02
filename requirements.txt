@@ -4,3 +4,5 @@ django-debug-toolbar==2.2
 python-dotenv==0.13.0
 pytz==2020.1
 sqlparse==0.3.1
+django-allauth==0.42.0
+django-widget-tweaks==1.4.8
