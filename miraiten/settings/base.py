@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'widget_tweaks',
 
-    'kyou_id',
+    'shop',
 ]
 
 MIDDLEWARE = [
@@ -38,9 +38,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'kyou_id_clone.urls'
+ROOT_URLCONF = 'miraiten.urls'
 
-WSGI_APPLICATION = 'kyou_id_clone.wsgi.application'
+WSGI_APPLICATION = 'miraiten.wsgi.application'
 
 TEMPLATES = [
     {

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/kyou_id_clone.iml" filepath="$PROJECT_DIR$/.idea/kyou_id_clone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../miraiten/.idea/miraiten.iml" filepath="$PROJECT_DIR$/../miraiten/.idea/miraiten.iml" />
     </modules>
   </component>
 </project>

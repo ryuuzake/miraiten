@@ -1,4 +1,4 @@
-"""kyou_id_clone URL Configuration
+"""miraiten URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -20,7 +20,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('kyou_id.urls')),
+    path('', include('shop.urls')),
     path('accounts/', include('allauth.urls')),
 ]
 
