@@ -20,7 +20,7 @@ class Item(models.Model):
     discount_price = models.FloatField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=150, blank=True, null=True)
-    image = models.ImageField(upload_to='item', default='default.jpg')
+    image = models.URLField()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
