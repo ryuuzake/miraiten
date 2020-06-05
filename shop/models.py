@@ -16,6 +16,9 @@ class Category(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    character = models.CharField(max_length=100, blank=True, null=True)
+    series = models.CharField(max_length=100, blank=True, null=True)
+    manufacturer = models.CharField(max_length=100, blank=True, null=True)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -24,7 +27,7 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Item, self).save(*args, **kwargs)
+        return super(Item, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
