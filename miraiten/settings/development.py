@@ -12,6 +12,7 @@ DEBUG = True
 
 INSTALLED_APPS += [
     'debug_toolbar',
+    'coverage',
 ]
 
 MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
