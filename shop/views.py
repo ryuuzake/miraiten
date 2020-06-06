@@ -5,15 +5,20 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.views.generic import ListView, DetailView
+from django.views.generic.base import TemplateView
 
 from .forms import SearchForm, ShippingForm, CouponForm
 from .models import Item, Order, OrderItem
 
 
-class HomeView(ListView):
-    model = Item
-    paginate_by = 30
+class HomeView(TemplateView):
     template_name = 'shop/home.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['featured_products'] = Item.objects.order_by('-id')[:3]
+        context['popular_products'] = Item.objects.order_by('-category__name')[:3]
+        return context
 
 
 class ItemView(DetailView):
@@ -22,15 +27,23 @@ class ItemView(DetailView):
     query_pk_and_slug = True
 
 
+class WishlistView(ListView):
+    queryset = OrderItem
+    template_name = 'shop/wishlist.html'
+
+
 class SearchView(ListView):
     model = Item
     form_class = SearchForm
     template_name = 'shop/search.html'
-    paginate_by = 30
+    paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class(self.request.GET)
+        context['total_results'] = self.get_queryset().count()
+        page = self.request.GET.get("page")
+        context['range_result'] = "{}-{}".format(1 * page, self.paginate_by * page)
         return context
 
     def get_queryset(self):

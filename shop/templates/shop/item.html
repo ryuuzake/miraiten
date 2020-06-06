@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Item</title>
+</head>
+<body>
+  <table border="1">
+    <tr>
+      <td>
+        <img src="{{ object.image }}" alt="Item Photo">
+      </td>
+      <td>
+        <table>
+          <tr><td>{{ object.name }}</td></tr>
+          <tr><td>{{ object.category }}</td></tr>
+          <tr><td>{{ object.price }}</td></tr>
+          {% if object.discount_price %}
+          <tr><td>{{ object.discount_price }}</td></tr>
+          {% else %}
+          <tr><td></td></tr>
+          {% endif %}
+          <tr><td>{{ object.character }}</td></tr>
+          <tr><td>{{ object.series }}</td></tr>
+          <tr><td>{{ object.manufacturer }}</td></tr>
+          <tr><td>{{ object.description }}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
