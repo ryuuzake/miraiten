@@ -27,7 +27,7 @@ To use this project, follow these steps:
     # Start application
     
     $ python manage.py makemigrations
-    $ python manage.py migration
+    $ python manage.py migrate
     $ python manage.py createsuperuser
     $ python manage.py runserver
     
