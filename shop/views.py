@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
+from .forms import SearchForm, ShippingForm, CouponForm
 from .models import Item, Order, OrderItem
 
 
@@ -12,6 +14,41 @@ class HomeView(ListView):
     model = Item
     paginate_by = 30
     template_name = 'shop/home.html'
+
+
+class ItemView(DetailView):
+    model = Item
+    template_name = 'shop/item.html'
+    query_pk_and_slug = True
+
+
+class SearchView(ListView):
+    model = Item
+    form_class = SearchForm
+    template_name = 'shop/search.html'
+    paginate_by = 30
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        form = self.form_class(self.request.GET)
+        if form.is_valid():
+            q = form.cleaned_data.get('q')
+            category = form.cleaned_data.get('category')
+            if q:
+                queryset = queryset.filter(Q(name__icontains=q) |
+                                           Q(series__icontains=q) |
+                                           Q(character__icontains=q) |
+                                           Q(category__name__icontains=q) |
+                                           Q(manufacturer__icontains=q))
+            if category:
+                queryset = queryset.filter(category__in=category)
+            return queryset
+        return queryset
 
 
 class CartView(LoginRequiredMixin, ListView):
@@ -25,6 +62,32 @@ class CartView(LoginRequiredMixin, ListView):
 
     def post(self, request, *args, **kwargs):
         pass
+
+
+class CheckoutView(LoginRequiredMixin, ListView):
+    template_name = 'shop/checkout.html'
+    shipping_form_class = ShippingForm
+    coupon_form_class = CouponForm
+
+    def get_queryset(self):
+        try:
+            return Order.objects.get(user=self.request.user, ordered=False)
+        except Order.DoesNotExist:
+            return None
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CheckoutView, self).get_context_data(**kwargs)
+        context.update(**kwargs)
+        context['coupon_form'] = self.coupon_form_class(self.request.POST)
+        context['shipping_form'] = self.shipping_form_class(self.request.POST)
+        return context
+
+
+class TransactionView(LoginRequiredMixin, ListView):
+    template_name = 'shop/transaction.html'
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user, ordered=True)
 
 
 @login_required

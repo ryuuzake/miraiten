@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 
 from shop.models import Item, Category, OrderItem, Order
-from shop.views import add_to_cart, remove_single_from_cart, delete_from_cart
+from shop.views import add_to_cart, remove_single_from_cart, delete_from_cart, SearchView
 
 
 class CategoryTest(TestCase):
@@ -108,3 +108,18 @@ class OrderTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertFalse(order.items.exists())
+
+
+class SearchViewTest(TestCase):
+
+    def setUp(self) -> None:
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='jacob', email='jacob@example.com', password='top_secret')
+        self.category = CategoryTest.create_category()
+        self.item = ItemTest.create_item(category=self.category)
+        self.order_item = OrderItemTest.create_order_item(user=self.user, item=self.item)
+
+    def test_search_q(self):
+        request = self.factory.get(f'search?q=Tanjiro')
+        response = SearchView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
