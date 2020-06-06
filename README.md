@@ -12,14 +12,23 @@ To use this project, follow these steps:
     $ git clone https://github.com/ryuuzake/kyou-id-clone.git
     $ cd kyou-id-clone
     
-    # Create virtual environment
+    # Create virtual environment (Linux)
 
     $ python3 -m venv venv
     $ source venv/bin/activate
     (venv) $ pip install -r requirements.txt
     
+    # Create virtual environment (Linux)
+
+    > python -m venv venv
+    > venv\Scripts\activate.bat
+    (venv) > pip install -r requirements.txt
+    
     # Start application
     
+    $ python manage.py makemigrations
+    $ python manage.py migration
+    $ python manage.py createsuperuser
     $ python manage.py runserver
     
 ## Contribute Guidelines
