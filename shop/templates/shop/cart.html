@@ -1,0 +1,87 @@
+{% extends "shop/base.html" %}
+
+{% load humanize %}
+
+{% block head_title %}Cart | Miraiten{% endblock %}
+
+{% block content %}
+<body class="template-color-5 font-family-02">
+
+    <div class="main-wrapper wrapper-boxed_layout">
+
+        <!-- Begin Loading Area -->
+        <div class="loading">
+            <div class="text-center middle">
+                <span class="loader">
+            <span class="loader-inner"></span>
+                </span>
+            </div>
+        </div>
+        <!-- Loading Area End Here -->
+
+
+        <!-- Begin Quicky's Breadcrumb Area -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <h2>Your Shopping Cart</h2>
+                </div>
+            </div>
+        </div>
+        <!-- Quicky's Breadcrumb Area End Here -->
+
+        <!-- Begin Quicky's Cart Area -->
+        <div class="quicky-cart-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="javascript:void(0)">
+                            <div class="table-content table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="quicky-product-remove">remove</th>
+                                            <th class="quicky-product-thumbnail">images</th>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="quicky-product-price">Unit Price</th>
+                                            <th class="quicky-product-quantity">Quantity</th>
+                                            <th class="quicky-product-subtotal">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order_item in object_list.items.all %}
+                                        <tr>
+                                            <td class="quicky-product-remove"><a href="{% url 'delete-from-cart' order_item.item.pk %}"><i class="zmdi zmdi-close"
+                                                title="Remove"></i></a></td>
+                                            <td class="quicky-product-thumbnail"><a href="javascript:void(0)"><img src="{{ order_item.item.image }}" alt="Quicky's Cart Thumbnail" width="105" height="105"></a></td>
+                                            <td class="quicky-product-name">{{ order_item.item.name }}</td>
+                                            <td class="quicky-product-price">{{ order_item.item.price }}</td>
+                                            <td>
+                                                <a href="{% url 'remove-single-from-cart' order_item.item.pk %}" role="button" > - </a> 
+                                                    {{ order_item.quantity }}
+                                                <a href="{% url 'add-to-cart' order_item.item.pk %}" role="button" > + </a>
+                                            </td>
+                                            <td class="product-subtotal"><span class="amount">{{ order_item.get_total_item_price }}</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 ml-auto">
+                                    <div class="cart-page-total">
+                                        <h2>Cart totals</h2>
+                                        <ul>
+                                            <li>Total <span>{{ object_list.get_total }}</span></li>
+                                        </ul>
+                                        <a href="{% url 'checkout' %}">Proceed to checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+{% endblock %}

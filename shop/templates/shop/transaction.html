@@ -1,0 +1,71 @@
+{% extends "shop/base.html" %}
+
+{% load humanize %}
+
+{% block head_title %}Transaction | Miraiten Shop{% endblock %}
+
+{% block content %}
+
+<body class="template-color-5 font-family-02">
+
+    <div class="main-wrapper wrapper-boxed_layout">
+
+        <!-- Begin Loading Area -->
+        <div class="loading">
+            <div class="text-center middle">
+                <span class="loader">
+            <span class="loader-inner"></span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Begin Quicky's Breadcrumb Area -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <h2>Your Transaction List</h2>
+                </div>
+            </div>
+        </div>
+        <!-- Quicky's Breadcrumb Area End Here -->
+
+        <!--Begin Quicky's Wishlist Area -->
+        <div class="quicky-wishlist_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="javascript:void(0)">
+                            <div class="table-content table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="quicky-product-thumbnail">Order ID</th>
+                                            <th class="quicky-product-price">Unit Price</th>
+                                            <th class="quicky-product-stock-status">Payment Status</th>
+                                            <th class="quicky-product-shipping-status">Shipping</th>
+                                            <th class="quicky-product-received-status">Received</th>
+                                            <th class="quicky-product-list">Item Detail</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in object_list %}
+                                        <tr>
+                                            <td class="quicky-product-thumbnail">{{ order.pk }}</td>
+                                            <td class="quicky-product-price"><span class="amount"></span>{{ order.get_total }}</span></td>
+                                            <td class="quicky-product-stock-status"><span class="in-stock">{{ order.payment }}</span></td>
+                                            <td class="quicky-product-stock-status">{{ order.being_delivered }}</td>
+                                            <td class="quicky-product-stock-status">{{ order.received }}</td>
+                                            <td class="quicky-product-stock-status"><a href="{% url 'transaction-detail' order.pk %}">Detail</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>
+{% endblock %}
