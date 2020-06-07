@@ -1,8 +1,15 @@
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 
-from shop.models import Item, Category, OrderItem, Order
-from shop.views import add_to_cart, remove_single_from_cart, delete_from_cart, SearchView
+from shop.models import Item, Category, OrderItem, Order, Wishlist
+from shop.views import (
+    add_to_cart,
+    remove_single_from_cart,
+    delete_from_cart,
+    add_to_wishlist,
+    remove_from_wishlist,
+    SearchView
+)
 
 
 class CategoryTest(TestCase):
@@ -75,7 +82,7 @@ class OrderTest(TestCase):
     def test_order_creation(self):
         order = OrderTest.create_order(user=self.user, order_item=self.order_item)
         self.assertTrue(isinstance(order, Order))
-        self.assertEqual(str(order), f"{self.user.username}")
+        self.assertEqual(str(order), f"Order of {self.user.username}")
 
     def test_order_add_to_cart(self):
         order = OrderTest.create_order(user=self.user, order_item=self.order_item)
@@ -108,6 +115,47 @@ class OrderTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertFalse(order.items.exists())
+
+
+class WishlistTest(TestCase):
+
+    def setUp(self) -> None:
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='jacob', email='jacob@example.com', password='top_secret')
+        self.category = CategoryTest.create_category()
+        self.item = ItemTest.create_item(category=self.category)
+        self.order_item = OrderItemTest.create_order_item(user=self.user, item=self.item)
+
+    @staticmethod
+    def create_wishlist(user, order_item):
+        wishlist = Wishlist.objects.create(user=user)
+        wishlist.items.add(order_item)
+        return wishlist
+
+    def test_wishlist_creation(self):
+        wishlist = WishlistTest.create_wishlist(user=self.user, order_item=self.order_item)
+        self.assertTrue(isinstance(wishlist, Wishlist))
+        self.assertEqual(str(wishlist), f"Wishlist of {self.user.username}")
+
+    def test_wishlist_add_to_wishlist(self):
+        wishlist = WishlistTest.create_wishlist(user=self.user, order_item=self.order_item)
+
+        request = self.factory.get(f'/wishlist/add/{self.item.pk}/')
+        request.user = self.user
+        response = add_to_wishlist(request, self.item.pk)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(wishlist.items.get(item__pk=self.item.pk).quantity, 2)
+
+    def test_wishlist_remove_from_wishlist(self):
+        wishlist = WishlistTest.create_wishlist(user=self.user, order_item=self.order_item)
+
+        request = self.factory.get(f'/wishlist/remove/{self.item.pk}/')
+        request.user = self.user
+        response = remove_from_wishlist(request, self.item.pk)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(wishlist.items.exists())
 
 
 class SearchViewTest(TestCase):

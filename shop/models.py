@@ -69,7 +69,7 @@ class Order(models.Model):
     received = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return f"Order of {self.user.username}"
 
     def get_total(self):
         total = 0
@@ -78,6 +78,14 @@ class Order(models.Model):
         if self.coupon:
             total -= self.coupon.amount
         return total
+
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    items = models.ManyToManyField(OrderItem)
+
+    def __str__(self):
+        return f"Wishlist of {self.user.username}"
 
 
 class Province(models.Model):
