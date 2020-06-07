@@ -840,7 +840,7 @@ i, .tab-content .tab-pane.active, .scroll-to-top i, .quantity .cart-plus-minus >
 }
 
 .rating-box.gamboge-color > ul > li > i {
-  color: #DC9B0E;
+  color: #eeeeee;
 }
 
 /* ---Quicky's Pagination--- */
@@ -1517,15 +1517,15 @@ i, .tab-content .tab-pane.active, .scroll-to-top i, .quantity .cart-plus-minus >
 }
 
 .bg-buttery-white {
-  background-color: #ddeee9;
+  background-color: #ea907a;
 }
 
 .bg-wisp-pink {
-  background-color: #f3ebe9;
+  background-color: #fb7b6b;
 }
 
 .bg-snow {
-  background-color: #fff7f5;
+  background-color: #ea907a;
 }
 
 .bg-clear_day {
@@ -6337,7 +6337,7 @@ i, .tab-content .tab-pane.active, .scroll-to-top i, .quantity .cart-plus-minus >
 /* ---Home Five--- */
 .bg-6,
 .bg-7 {
-  background-image: url("../images/slider/bg/5-1.jpg");
+  background-image: url("../img/jw-5d1f3a66d41f13.83452032.jpeg.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -6359,7 +6359,7 @@ i, .tab-content .tab-pane.active, .scroll-to-top i, .quantity .cart-plus-minus >
 }
 
 .bg-7 {
-  background-image: url("../images/slider/bg/5-2.jpg");
+  background-image: url("../img/bg-02.png");
 }
 
 /* ---Home Six--- */
