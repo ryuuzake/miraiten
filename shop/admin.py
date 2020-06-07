@@ -53,7 +53,7 @@ class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
 
 
-class ItemAdmin(admin.ModelAdmin):
+class CsvImportMixins(admin.ModelAdmin):
     change_list_template = "shop/item_changelist.html"
 
     def get_urls(self):
@@ -73,6 +73,13 @@ class ItemAdmin(admin.ModelAdmin):
 
     @transaction.atomic
     def process_csv(self, reader):
+        pass
+
+
+class ItemAdmin(CsvImportMixins):
+
+    @transaction.atomic
+    def process_csv(self, reader):
         for row in reader:
             category, _ = Category.objects.get_or_create(name=row['category'])
             Item.objects.get_or_create(name=row['name'], category=category, price=row['price'],
@@ -81,12 +88,29 @@ class ItemAdmin(admin.ModelAdmin):
                                        image=row['image'])
 
 
+class ProvinceAdmin(CsvImportMixins):
+
+    @transaction.atomic
+    def process_csv(self, reader):
+        for row in reader:
+            Province.objects.get_or_create(pk=int(row['province_id']), name=row['name'])
+
+
+class CityAdmin(CsvImportMixins):
+
+    @transaction.atomic
+    def process_csv(self, reader):
+        for row in reader:
+            province, _ = Province.objects.get_or_create(pk=int(row['province_id']))
+            City.objects.get_or_create(pk=int(row['district_id']), name=row['name'], province=province)
+
+
 admin.site.register(Category)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
 admin.site.register(Payment)
 admin.site.register(Coupon)
-admin.site.register(Province)
-admin.site.register(City)
+admin.site.register(Province, ProvinceAdmin)
+admin.site.register(City, CityAdmin)
 admin.site.register(Address, AddressAdmin)

@@ -63,7 +63,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
     address = models.ForeignKey('Address', on_delete=models.SET_NULL, blank=True, null=True)
-    payment = models.ForeignKey('Payment', on_delete=models.SET_NULL, blank=True, null=True)
+    payment = models.BooleanField(default=False)
     coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, blank=True, null=True)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
