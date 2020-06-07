@@ -26,6 +26,11 @@ class ItemView(DetailView):
     template_name = 'shop/item.html'
     query_pk_and_slug = True
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['best_sellers'] = Item.objects.order_by('-category__name')[:3]
+        return context
+
 
 class WishlistView(ListView):
     template_name = 'shop/wishlist.html'

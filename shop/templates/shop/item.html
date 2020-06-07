@@ -1,32 +1,192 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Item</title>
-</head>
-<body>
-  <table border="1">
-    <tr>
-      <td>
-        <img src="{{ object.image }}" alt="Item Photo">
-      </td>
-      <td>
-        <table>
-          <tr><td>{{ object.name }}</td></tr>
-          <tr><td>{{ object.category }}</td></tr>
-          <tr><td>{{ object.price }}</td></tr>
-          {% if object.discount_price %}
-          <tr><td>{{ object.discount_price }}</td></tr>
-          {% else %}
-          <tr><td></td></tr>
-          {% endif %}
-          <tr><td>{{ object.character }}</td></tr>
-          <tr><td>{{ object.series }}</td></tr>
-          <tr><td>{{ object.manufacturer }}</td></tr>
-          <tr><td>{{ object.description }}</td></tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
+{% extends 'shop/base.html' %}
+
+{% load humanize %}
+
+{% block head_title %}Product View || Miraiten{% endblock %}
+
+{% block content %}
+<!-- Begin Quicky's Single Product Area -->
+<div class="sp-area pt-100">
+  <div class="container">
+    <div class="sp-nav">
+      <div class="row">
+        <div class="col-lg-5">
+          <div class="sp-img_area">
+            <div class="sp-img_slider slick-img-slider quicky-element-carousel" data-slick-options='{
+                                    "slidesToShow": 1,
+                                    "arrows": false,
+                                    "fade": true,
+                                    "draggable": false,
+                                    "swipe": false,
+                                    "asNavFor": ".sp-img_slider-nav"
+                                    }'>
+              <div class="single-slide red zoom">
+                <img src="{{ object.image }}" alt="{{ object.name }}">
+              </div>
+            </div>
+            <div
+                class="sp-img_slider-nav slick-slider-nav quicky-element-carousel arrow-style arrow-sm_size arrow-day_color"
+                data-slick-options='{
+                                    "slidesToShow": 3,
+                                    "asNavFor": ".sp-img_slider",
+                                    "focusOnSelect": true,
+                                    "arrows" : true,
+                                    "spaceBetween": 30
+                                    }' data-slick-responsive='[
+                                            {"breakpoint":1501, "settings": {"slidesToShow": 3}},
+                                            {"breakpoint":1200, "settings": {"slidesToShow": 2}},
+                                            {"breakpoint":992, "settings": {"slidesToShow": 4}},
+                                            {"breakpoint":768, "settings": {"slidesToShow": 3}},
+                                            {"breakpoint":575, "settings": {"slidesToShow": 2}}
+                                        ]'>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="sp-content ml-lg-4">
+            <div class="sp-heading">
+              <h5>{{ object.name }}</h5>
+            </div>
+            <div class="rating-box">
+              <ul>
+                <li><i class="zmdi zmdi-star"></i></li>
+                <li><i class="zmdi zmdi-star"></i></li>
+                <li><i class="zmdi zmdi-star"></i></li>
+                <li class="silver-color"><i class="zmdi zmdi-star"></i></li>
+                <li class="silver-color"><i class="zmdi zmdi-star"></i></li>
+              </ul>
+            </div>
+            <div class="sp-essential_stuff">
+              <ul>
+                <li>Category <a href="{% url 'search' %}?category={{ object.category.pk }}">{{ object.category.name }}</a></li>
+                <li>Character <a href="{% url 'search' %}?q={{ object.character }}">{{ object.character }}</a></li>
+                <li>Series <a href="{% url 'search' %}?q={{ object.series }}">{{ object.series }}</a></li>
+                <li>Manufacturer <a href="{% url 'search' %}?q={{ object.manufacturer }}">{{ object.manufacturer }}</a></li>
+                <li>Price: <span>Rp {{ object.price|floatformat|intcomma }}</span></li>
+              </ul>
+            </div>
+            <div class="qty-btn_area">
+              <ul>
+                <li><a class="qty-cart_btn" href="{% url 'add-to-cart' item.pk %}">Add To Cart</a></li>
+                <li><a class="qty-wishlist_btn" href="{% url 'wishlist' %}" data-toggle="tooltip" title="Add To Wishlist"><i
+                    class="zmdi zmdi-favorite-outline"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Quicky's Single Product Area End Here -->
+
+<!-- Begin Product Tab Area Two -->
+<div class="product-tab_area pt-90">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="sp-product-tab_nav">
+          <div class="product-tab">
+            <ul class="nav product-menu">
+              <li><a class="active" data-toggle="tab" href="#description"><span>Description</span></a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content uren-tab_content">
+            <div id="description" class="tab-pane active show" role="tabpanel">
+              <div class="product-description">
+                <ul>{{ object.description }}</ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Product Tab Area Two End Here -->
+
+<!-- Begin Product Area Seven -->
+<div class="product-area-13 pt-95">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title">
+          <h3 class="heading">Best Seller</h3>
+          <div class="section-icon"></div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="quicky-element-carousel product-slider" data-slick-options='{
+                            "slidesToShow": 3,
+                            "slidesToScroll": 1,
+                            "infinite": false,
+                            "arrows": false,
+                            "dots": false,
+                            "spaceBetween": 30
+                            }' data-slick-responsive='[
+                            {"breakpoint":992, "settings": {
+                            "slidesToShow": 2
+                            }},
+                            {"breakpoint":768, "settings": {
+                            "slidesToShow": 1
+                            }}
+                        ]'>
+
+          {% for item in best_sellers %}
+          <div class="product-item">
+            <div class="single-product">
+              <div class="product-img">
+                <a href="{% url 'item' item.pk item.slug %}">
+                  <img src="{{ item.image }}" alt="{{ item.name }}">
+                </a>
+                <span class="sticker red-color">Sale</span>
+                <div class="add-actions">
+                  <ul>
+                    <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a
+                        href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="top" title="View Detail"><i
+                        class="icon-magnifier"></i></a>
+                    </li>
+                    <li><a href="{% url 'wishlist' %}" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i
+                        class="icon-heart"></i></a>
+                    </li>
+                    <li><a href="{% url 'add-to-cart' item.pk %}" data-toggle="tooltip" data-placement="top" title="Add To cart"><i
+                        class="icon-bag"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="product-content bg-snow">
+                <div class="product-desc_info">
+                  <div class="manufacture-product_top">
+                    <span>{{ item.category.name }}</span>
+                  </div>
+                  <h3 class="product-name"><a href="{% url 'item' item.pk item.slug %}">{{ item.name }}</a></h3>
+                  <div class="price-box">
+                    <span class="new-price ml-0">Rp {{ item.price|floatformat|intcomma }}</span>
+                  </div>
+                  <div class="review-area d-flex justify-content-between align-items-center">
+                    <div class="rating-box gamboge-color">
+                      <ul>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Product Area Seven End Here -->
+{% endblock %}
