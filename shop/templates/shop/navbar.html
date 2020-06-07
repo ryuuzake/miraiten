@@ -1,0 +1,98 @@
+{% load static %}
+{% load cart_template_tags %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="main-header_nav position-relative">
+        <div class="header-logo_area">
+          <a href="/">
+            <img src="{% static 'img/Untitled-3.png' %}" width="120" height="30" alt="Header Logo">
+          </a>
+        </div>
+        <div class="main-menu_area d-none d-lg-block">
+          <nav class="main-nav d-flex justify-content-center">
+            <ul>
+              <li class="mh-sticker_wrap">
+                <span class="mh-sticker">New</span>
+                <a href="{% url 'search' %}">Hot Sale</a>
+              </li>
+              <li class="megamenu-holder position-static"><a href="{% url 'search' %}?q=Light%20Novel">Shop</a>
+                <div class="quicky-megamenu_wrap">
+                  <ul class="quicky-megamenu">
+                    <li><span class="megamenu-title">Light Novel</span>
+                      <ul>
+                        <li><a href="{% url 'search' %}?q=English%20Light%20Novel">EN Light Novel</a></li>
+                        <li><a href="{% url 'search' %}?category=7">JP Light Novel</a></li>
+                      </ul>
+                    </li>
+                    <li><span class="megamenu-title">Manga</span>
+                      <ul>
+                        <li><a href="{% url 'search' %}?q=EN%20Manga">EN Manga</a></li>
+                        <li><a href="{% url 'search' %}?q=JP%20Manga">JP Manga</a></li>
+                      </ul>
+                    </li>
+                    <li><span class="megamenu-title">Figure & Merchandise</span>
+                      <ul>
+                        <li><a href="{% url 'search' %}?q=PVC%20Figure">PVC Figure</a></li>
+                        <li><a href="{% url 'search' %}?q=Figma">Figma</a></li>
+                        <li><a href="{% url 'search' %}?q=Nendoroid">Nendoroid</a></li>
+                        <li><a href="{% url 'search' %}?q=Model%20Kit">Model Kit</a></li>
+                        <li><a href="{% url 'search' %}?q=Merchandise">Merchandise</a></li>
+                      </ul>
+                    </li>
+                    <li><span class="megamenu-title">Shop Related Pages</span>
+                      <ul>
+                        <li><a href="my-account.html">My Account</a></li>
+                        <li><a href="{% url 'account_login' %}">Login | Register</a></li>
+                        <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+                        <li><a href="{% url 'cart' %}">Cart</a></li>
+                        <li><a href="{% url 'checkout' %}">Checkout</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+
+                </div>
+              </li>
+
+            </ul>
+          </nav>
+        </div>
+        <div class="header-right_area">
+          <ul>
+            <li class="mobile-menu_wrap d-inline-block d-lg-none">
+              <a href="#mobileMenu" class="mobile-menu_btn toolbar-btn color--white">
+                <i class="zmdi zmdi-menu"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#searchBar" class="search-btn toolbar-btn">
+                <i class="zmdi zmdi-search"></i>
+              </a>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li class="minicart-wrap mr-md_0">
+              <a href="#miniCart" class="minicart-btn toolbar-btn">
+                <div class="minicart-count_area">
+                  <i class="zmdi zmdi-mall"></i>
+                  <p class="total-price">
+                    <span class="badge badge-danger">{{ request.user|cart_item_count }}</span>
+                  </p>
+                </div>
+              </a>
+            </li>
+            <li class="dropdown-holder user-setting_wrap"><a href="javascript:void(0)"><i
+                class="zmdi zmdi-account-o"></i></a>
+              <ul class="quicky-dropdown">
+                <li class="position-relative"><a href="my-account.html">My Account</a></li>
+                <li class="position-relative"><a href="{% url 'account_logout' %}">Logout</a>
+              </ul>
+            </li>
+            {% else %}
+            <li class="user-setting_wrap"><a href="{% url 'account_login' %}">Login | Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

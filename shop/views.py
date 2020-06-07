@@ -36,14 +36,14 @@ class SearchView(ListView):
     model = Item
     form_class = SearchForm
     template_name = 'shop/search.html'
-    paginate_by = 9
+    paginate_by = 15
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class(self.request.GET)
-        context['total_results'] = self.get_queryset().count()
-        page = self.request.GET.get("page")
-        context['range_result'] = "{}-{}".format(1 * page, self.paginate_by * page)
+        page = int(self.request.GET.get("page", 1))
+        context['range_result'] = "{} - {}".format(self.paginate_by * page - (self.paginate_by - 1),
+                                                   self.paginate_by * page)
         return context
 
     def get_queryset(self):
@@ -57,7 +57,7 @@ class SearchView(ListView):
                                            Q(series__icontains=q) |
                                            Q(character__icontains=q) |
                                            Q(category__name__icontains=q) |
-                                           Q(manufacturer__icontains=q))
+                                           Q(manufacturer__icontains=q)).order_by('-id')
             if category:
                 queryset = queryset.filter(category__in=category)
             return queryset

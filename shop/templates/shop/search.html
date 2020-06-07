@@ -1,0 +1,215 @@
+{% extends "shop/base.html" %}
+
+{% load humanize %}
+{% load cart_template_tags %}
+{% load static %}
+
+{% block head_title %}Miraiten Shop - Search{% endblock %}
+
+{% block content %}
+<!-- Begin Quicky's Breadcrumb Area -->
+<div class="breadcrumb-area">
+  <div class="container">
+    <div class="breadcrumb-content">
+      <h2>Hot Sale Miraiten</h2>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li class="active">Hot Sale</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Quicky's Breadcrumb Area End Here -->
+<!-- Begin Quicky's Content Wrapper Area -->
+<div class="quicky-content_wrapper pt-90 pb-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 order-2 order-lg-1">
+        <div class="quicky-sidebar-catagories_area">
+          <div class="quicky-sidebar_categories category-module">
+            <div class="quicky-categories_title">
+              <h5>Categories</h5>
+            </div>
+            <div class="sidebar-categories_menu">
+              <form action="">
+                <div class="price-filter my-3">
+                  <div class="price-slider-amount">
+                    <div class="label-input mx-auto">
+                      <button class="filter-btn" type="submit">Filter</button>
+                    </div>
+                  </div>
+                </div>
+                <input type="hidden" name="q" value='{{ form.q.value|default_if_none:"" }}'>
+                <ul>
+                  {% for choice in form.category %}
+                  <li>
+                    {{ choice }}
+                    {{ choice.label_tag }}
+                  </li>
+                  {% endfor %}
+                </ul>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 order-1 order-lg-2">
+        <div class="shop-toolbar">
+          <div class="product-view-mode">
+            <a class="active grid-3" data-target="gridview-3" data-toggle="tooltip" data-placement="top"
+               title="Grid View"><i class="zmdi zmdi-grid"></i></a>
+            <a class="list" data-target="listview" data-toggle="tooltip" data-placement="top" title="List View"><i
+                class="zmdi zmdi-view-list-alt"></i></a>
+          </div>
+          <div class="product-page_count">
+            <p>Showing {{ range_result }} of {{ page_obj.paginator.count }} results</p>
+          </div>
+          <div class="product-item-selection_area">
+            <div class="product-short">
+              <label class="select-label">Sort By:</label>
+              <select class="nice-select">
+                <option value="1">Default sorting</option>
+                <option value="2">Name, A to Z</option>
+                <option value="3">Name, Z to A</option>
+                <option value="4">Price, low to high</option>
+                <option value="5">Price, high to low</option>
+                <option value="5">Rating (Highest)</option>
+                <option value="5">Rating (Lowest)</option>
+                <option value="5">Model (A - Z)</option>
+                <option value="5">Model (Z - A)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="shop-product-wrap grid gridview-3 row">
+          {% for item in object_list %}
+          <div class="col-12">
+            <div class="product-item">
+              <div class="single-product">
+                <div class="product-img">
+                  <a href="{% url 'item' item.pk item.slug %}">
+                    <img src="{{ item.image }}" alt="{{ item.name }}">
+                  </a>
+                  <div class="add-actions">
+                    <ul>
+                      <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a
+                          href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="top"
+                          title="View Detail"><i class="icon-magnifier"></i></a>
+                      </li>
+                      <li><a href="{% url 'wishlist' %}" data-toggle="tooltip" data-placement="top"
+                             title="Add To Wishlist"><i class="icon-heart"></i></a>
+                      </li>
+                      <li><a href="{% url 'add-to-cart' item.pk %}" data-toggle="tooltip" data-placement="top"
+                             title="Add To cart"><i class="icon-bag"></i></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="product-content bg-snow">
+                  <div class="product-desc_info">
+                    <div class="manufacture-product_top">
+                      <span>{{ item.category.name }}</span>
+                    </div>
+                    <h3 class="product-name"><a href="{% url 'item' item.pk item.slug %}">{{ item.name }}</a></h3>
+                    <div class="price-box">
+                      <span class="new-price ml-0">Rp {{ item.price|floatformat|intcomma }}</span>
+                    </div>
+                    <div class="review-area d-flex justify-content-between align-items-center">
+                      <div class="rating-box gamboge-color">
+                        <ul>
+                          <li><i class="icon-star"></i></li>
+                          <li><i class="icon-star"></i></li>
+                          <li><i class="icon-star"></i></li>
+                          <li><i class="icon-star"></i></li>
+                          <li><i class="icon-star"></i></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-product_item">
+              <div class="single-product">
+                <div class="product-img">
+                  <a href="{% url 'item' item.pk item.slug %}">
+                    <img src="{{ item.image }}" alt="{{ item.name }}">
+                  </a>
+                </div>
+                <div class="quicky-product-content">
+                  <div class="product-desc_info">
+                    <h6 class="product-name"><a href="{% url 'item' item.pk item.slug %}">{{ item.name }}</a>
+                    </h6>
+                    <div class="price-box">
+                      <span class="new-price ml-0">Rp {{ item.price|floatformat|intcomma }}</span>
+                    </div>
+                    <div class="rating-box gamboge-color">
+                      <ul>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                        <li><i class="icon-star"></i></li>
+                      </ul>
+                    </div>
+                    <div class="product-short_desc">
+                      <p>{{ item.description }}</p>
+                    </div>
+                  </div>
+                  <div class="add-actions">
+                    <ul>
+                      <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a
+                          href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="top"
+                          title="View Detail"><i class="icon-magnifier"></i></a>
+                      </li>
+                      <li><a href="{% url 'wishlist'  %}" data-toggle="tooltip" data-placement="top"
+                             title="Add To Wishlist"><i class="icon-heart"></i></a>
+                      </li>
+                      <li><a href="{% url 'add-to-cart' item.pk %}" data-toggle="tooltip" data-placement="top"
+                             title="Add To cart"><i class="icon-bag"></i></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% if is_paginated %}
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="quicky-paginatoin-area mx-auto">
+              <ul class="quicky-pagination-box">
+                {% if page_obj.has_previous %}
+                <li><a class="Next" href="?{% param_replace page=page_obj.previous_page_number %}">Prev</a></li>
+                {% endif %}
+                {% if page_obj.number|add:'-4' > 1 %}
+                <li><a href="?{% param_replace page=page_obj.number|add:'5' %}">&hellip;</a></li>
+                {% endif %}
+
+                {% for i in page_obj.paginator.page_range %}
+                  {% if page_obj.number == i %}
+                      <li class="active"><a href="?{% param_replace page=i %}">{{ i }}</a></li>
+                  {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                      <li><a href="?{% param_replace page=i %}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}
+                  <li><a href="?{% param_replace page=page_obj.number|add:'5' %}">&hellip;</a></li>
+                {% endif %}
+                {% if page_obj.has_next %}
+                <li><a class="Next" href="?{% param_replace page=page_obj.next_page_number %}">Next</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Quicky's Content Wrapper Area End Here -->
+{% endblock %}
