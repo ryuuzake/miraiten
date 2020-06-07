@@ -1,14 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.base import TemplateView
 
-from .forms import SearchForm, ShippingForm, CouponForm
-from .models import Item, Order, OrderItem, Wishlist
+from .forms import SearchForm, ShippingForm
+from .models import Item, Order, OrderItem, Wishlist, Address
 
 
 class HomeView(TemplateView):
@@ -32,7 +34,7 @@ class ItemView(DetailView):
         return context
 
 
-class WishlistView(ListView):
+class WishlistView(LoginRequiredMixin, ListView):
     template_name = 'shop/wishlist.html'
 
     def get_queryset(self):
@@ -87,10 +89,10 @@ class CartView(LoginRequiredMixin, ListView):
         pass
 
 
-class CheckoutView(LoginRequiredMixin, ListView):
+class CheckoutView(LoginRequiredMixin, FormView):
     template_name = 'shop/checkout.html'
-    shipping_form_class = ShippingForm
-    coupon_form_class = CouponForm
+    form_class = ShippingForm
+    success_url = reverse_lazy('payment')
 
     def get_queryset(self):
         try:
@@ -101,9 +103,31 @@ class CheckoutView(LoginRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CheckoutView, self).get_context_data(**kwargs)
         context.update(**kwargs)
-        context['coupon_form'] = self.coupon_form_class(self.request.POST)
-        context['shipping_form'] = self.shipping_form_class(self.request.POST)
+        context['object_list'] = self.get_queryset()
         return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        try:
+            address = Address.objects.get(user=self.request.user, default=True)
+            initial = model_to_dict(address)
+        except Address.DoesNotExist:
+            pass
+        finally:
+            return initial
+
+    def form_valid(self, form):
+        order = self.get_queryset()
+        if order is not None:
+            address, _ = form.create_address()
+            order.address = address
+            order.ordered = True
+            order.save()
+        return super(CheckoutView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.info(request=self.request, message=str(form.errors), fail_silently=True)
+        return super().form_invalid(form)
 
 
 class TransactionView(LoginRequiredMixin, ListView):
@@ -111,6 +135,10 @@ class TransactionView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user, ordered=True)
+
+
+class PaymentView(LoginRequiredMixin, TemplateView):
+    template_name = 'shop/payment.html'
 
 
 @login_required

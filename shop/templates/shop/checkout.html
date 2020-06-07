@@ -1,0 +1,131 @@
+{% extends "shop/base.html" %}
+
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block head_title %}Checkout || Miraiten{% endblock %}
+
+{% block content %}
+<!-- Begin Quicky's Checkout Area -->
+<div class="checkout-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-12">
+        <form action="{% url 'checkout' %}" method="post">
+          {% csrf_token %}
+          <div class="checkbox-form">
+            <h3>Shipping Details</h3>
+            <div class="row">
+              <div class="col-md-12">
+                {{ form.user.as_hidden }}
+                <div class="country-select clearfix">
+                  <label for="{{ form.province.for_label }}">{{ form.province.label }} <span class="required">*</span></label>
+                  {{ form.province|add_class:'myniceselect nice-select wide' }}
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="country-select clearfix">
+                  <label for="{{ form.city.for_label }}">{{ form.city.label }} <span class="required">*</span></label>
+                  {{ form.city|add_class:'myniceselect nice-select wide' }}
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="checkout-form-list">
+                  <label for="{{ form.street.for_label }}">{{ form.street.label }} <span class="required">*</span></label>
+                  {{ form.street }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="checkout-form-list">
+                  <label for="{{ form.postal_code.for_label }}">
+                    {{ form.postal_code.label }} <span class="required">*</span>
+                  </label>
+                  {{ form.postal_code }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="checkout-form-list">
+                  <label for="{{ form.phone_number.for_label }}">
+                    {{ form.phone_number.label }} <span class="required">*</span>
+                  </label>
+                  {{ form.phone_number }}
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="checkout-form-list create-acc">
+                  {{ form.default }}
+                  <label for="{{ form.default.for_label }}">
+                    Save Shipping Address as Default
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="checkout-form-list create-acc">
+                  <div class="order-button-payment">
+                    <input value="Place order" type="submit" {% if not object_list %}disabled{% endif %}>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-6 col-12">
+        <div class="your-order">
+          <h3>Your order</h3>
+          <div class="your-order-table table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th class="cart-product-name">Product</th>
+                <th class="cart-product-total">Total</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for order_item in object_list.items.all %}
+              <tr class="cart_item">
+                <td class="cart-product-name"> {{ order_item.item.name }}
+                  <strong class="product-quantity"> × {{ order_item.quantity }}</strong></td>
+                <td class="cart-product-total">
+                  <span class="amount">
+                    Rp {{ order_item.get_final_price|floatformat|intcomma }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+              <tr class="order-total">
+                <th>Order Total</th>
+                <td><strong><span class="amount">Rp {{ object_list.get_total|floatformat|intcomma }}</span></strong></td>
+              </tr>
+            </table>
+          </div>
+          <div class="payment-method">
+            <div class="payment-accordion">
+              <div id="accordion">
+                <div class="card">
+                  <div class="card-header" id="#payment-1">
+                    <h5 class="panel-title">
+                      <a href="javascript:void(0)" class="" data-toggle="collapse" data-target="#collapseOne"
+                         aria-expanded="true" aria-controls="collapseOne">
+                        Bank Transfer
+                      </a>
+                    </h5>
+                  </div>
+                  <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                      <p>BANK BNI</p>
+                      <p>2016121649</p>
+                      <p>A/N : Pt. Miraiten</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Quicky's Checkout Area End Here -->
+{% endblock %}

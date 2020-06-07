@@ -3256,6 +3256,12 @@ i, .tab-content .tab-pane.active, .scroll-to-top i, .quantity .cart-plus-minus >
   background: #fb7785;
 }
 
+.template-color-5 .order-button-payment input:disabled {
+  background: #a2a2a2;
+  border-color: #a2a2a2;
+  cursor: not-allowed;
+}
+
 .template-color-5 .compare-product-name a:hover {
   color: #fb7785;
 }

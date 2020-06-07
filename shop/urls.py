@@ -10,6 +10,7 @@ from .views import (
     remove_single_from_cart,
     CheckoutView,
     TransactionView,
+    PaymentView,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     path('cart/delete/<int:pk>/', delete_from_cart, name="delete-from-cart"),
     path('checkout/', CheckoutView.as_view(), name="checkout"),
     path('transaction/', TransactionView.as_view(), name="transaction"),
+    path('payment/', PaymentView.as_view(), name="payment"),
 ]

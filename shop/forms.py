@@ -12,9 +12,13 @@ class SearchForm(forms.Form):
 
 
 class ShippingForm(forms.ModelForm):
+
+    def create_address(self):
+        return Address.objects.get_or_create(self.cleaned_data)
+
     class Meta:
         model = Address
-        exclude = ['user']
+        fields = '__all__'
 
 
 class CouponForm(forms.ModelForm):
