@@ -8,7 +8,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 
 from .forms import SearchForm, ShippingForm, CouponForm
-from .models import Item, Order, OrderItem
+from .models import Item, Order, OrderItem, Wishlist
 
 
 class HomeView(TemplateView):
@@ -28,8 +28,13 @@ class ItemView(DetailView):
 
 
 class WishlistView(ListView):
-    queryset = OrderItem
     template_name = 'shop/wishlist.html'
+
+    def get_queryset(self):
+        try:
+            return Wishlist.objects.get(user=self.request.user)
+        except Wishlist.DoesNotExist:
+            return Wishlist.objects.none()
 
 
 class SearchView(ListView):
@@ -71,7 +76,7 @@ class CartView(LoginRequiredMixin, ListView):
         try:
             return Order.objects.get(user=self.request.user, ordered=False)
         except Order.DoesNotExist:
-            return None
+            return Order.objects.none()
 
     def post(self, request, *args, **kwargs):
         pass
