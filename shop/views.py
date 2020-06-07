@@ -112,14 +112,14 @@ class CheckoutView(LoginRequiredMixin, FormView):
             address = Address.objects.get(user=self.request.user, default=True)
             initial = model_to_dict(address)
         except Address.DoesNotExist:
-            pass
+            initial['user'] = self.request.user
         finally:
             return initial
 
     def form_valid(self, form):
         order = self.get_queryset()
         if order is not None:
-            address, _ = form.create_address()
+            address = form.create_address()
             order.address = address
             order.ordered = True
             order.save()
