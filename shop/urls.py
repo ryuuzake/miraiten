@@ -11,6 +11,7 @@ from .views import (
     CheckoutView,
     TransactionView,
     TransactionDetailView,
+    PaymentView,
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path('checkout/', CheckoutView.as_view(), name="checkout"),
     path('transaction/', TransactionView.as_view(), name="transaction"),
     path('transaction/<int:pk>/', TransactionDetailView.as_view(), name="transaction-detail"),
+    path('payment/', PaymentView.as_view(), name="payment"),
 ]

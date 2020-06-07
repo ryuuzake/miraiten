@@ -271,6 +271,18 @@
   </header>
   <!-- Main Header Area Two End Here -->
 
+  {% if messages %}
+  <div class="row mt-3">
+    <div class="col-lg-10 col-xl-9 mx-auto">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        <span>{{ message }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
   {% block content %}
   {% endblock %}
 
