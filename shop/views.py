@@ -105,7 +105,12 @@ class TransactionView(LoginRequiredMixin, ListView):
     template_name = 'shop/transaction.html'
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user, ordered=True)
+        return Order.objects.filter(user=self.request.user)
+
+
+class TransactionDetailView(DetailView):
+    model = Order
+    template_name = 'shop/transactiondetail.html'
 
 
 @login_required

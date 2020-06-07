@@ -1,0 +1,79 @@
+{% extends "shop/base.html" %}
+
+{% load humanize %}
+
+{% block head_title %}Transaction | Miraiten Shop{% endblock %}
+
+{% block content %}
+
+<body class="template-color-5 font-family-02">
+
+    <div class="main-wrapper wrapper-boxed_layout">
+
+        <!-- Begin Loading Area -->
+        <div class="loading">
+            <div class="text-center middle">
+                <span class="loader">
+            <span class="loader-inner"></span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Begin Quicky's Breadcrumb Area -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <h2>Transaction Detail</h2>
+                </div>
+            </div>
+        </div>
+        <!-- Quicky's Breadcrumb Area End Here -->
+
+        <!--Begin Quicky's Wishlist Area -->
+        <div class="quicky-wishlist_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="javascript:void(0)">
+                            <div class="table-content table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="quicky-product-thumbnail">images</th>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="quicky-product-price">Unit Price</th>
+                                            <th class="quicky-product-price">Quantity</th>
+                                            <th class="quicky-product-price">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order_id in object.items.all %}
+                                        <tr>
+                                            <td class="quicky-product-thumbnail"><a href="javascript:void(0)"><img src="{{ order_id.item.image }}" alt="Quicky's Cart Thumbnail" width="105" height="105"></a></td>
+                                            <td class="quicky-product-name">{{ order_id.item.name }}</td>
+                                            <td class="quicky-product-price">{{ order_id.item.price }}</td>
+                                            <td class="quicky-product-name">{{ order_id.quantity }}</td>
+                                            <td class="product-subtotal"><span class="amount">{{ order_id.get_total_item_price }}</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 ml-auto">
+                                    <div class="cart-page-total">
+                                        <h2>Totals</h2>
+                                        <ul>
+                                            <li>Total <span>{{ object.get_total }}</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>
+{% endblock %}
