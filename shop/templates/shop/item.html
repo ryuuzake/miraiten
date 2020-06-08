@@ -68,7 +68,7 @@
             <div class="qty-btn_area">
               <ul>
                 <li><a class="qty-cart_btn" href="{% url 'add-to-cart' item.pk %}">Add To Cart</a></li>
-                <li><a class="qty-wishlist_btn" href="{% url 'wishlist' %}" data-toggle="tooltip" title="Add To Wishlist"><i
+                <li><a class="qty-wishlist_btn" href="{% url 'toggle-wishlist' item.pk %}" data-toggle="tooltip" title="Add To Wishlist"><i
                     class="zmdi zmdi-favorite-outline"></i></a>
                 </li>
               </ul>
@@ -148,7 +148,7 @@
                         href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="top" title="View Detail"><i
                         class="icon-magnifier"></i></a>
                     </li>
-                    <li><a href="{% url 'wishlist' %}" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i
+                    <li><a href="{% url 'toggle-wishlist' item.pk %}" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i
                         class="icon-heart"></i></a>
                     </li>
                     <li><a href="{% url 'add-to-cart' item.pk %}" data-toggle="tooltip" data-placement="top" title="Add To cart"><i

@@ -53,15 +53,15 @@
                                         <tr>
                                             <td class="quicky-product-remove"><a href="{% url 'delete-from-cart' order_item.item.pk %}"><i class="zmdi zmdi-close"
                                                 title="Remove"></i></a></td>
-                                            <td class="quicky-product-thumbnail"><a href="javascript:void(0)"><img src="{{ order_item.item.image }}" alt="Quicky's Cart Thumbnail" width="105" height="105"></a></td>
+                                            <td class="quicky-product-thumbnail"><a href="javascript:void(0)"><img src="{{ order_item.item.image }}" alt="{{ order_item.item.name }}" width="105" height="105"></a></td>
                                             <td class="quicky-product-name">{{ order_item.item.name }}</td>
-                                            <td class="quicky-product-price">{{ order_item.item.price }}</td>
+                                            <td class="quicky-product-price">Rp {{ order_item.item.price|floatformat|intcomma }}</td>
                                             <td>
                                                 <a href="{% url 'remove-single-from-cart' order_item.item.pk %}" role="button" > - </a> 
                                                     {{ order_item.quantity }}
                                                 <a href="{% url 'add-to-cart' order_item.item.pk %}" role="button" > + </a>
                                             </td>
-                                            <td class="product-subtotal"><span class="amount">{{ order_item.get_total_item_price }}</span></td>
+                                            <td class="product-subtotal"><span class="amount">Rp {{ order_item.get_total_item_price|floatformat|intcomma }}</span></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -72,7 +72,7 @@
                                     <div class="cart-page-total">
                                         <h2>Cart totals</h2>
                                         <ul>
-                                            <li>Total <span>{{ object_list.get_total }}</span></li>
+                                            <li>Total <span>Rp {{ object_list.get_total|floatformat|intcomma }}</span></li>
                                         </ul>
                                         <a href="{% url 'checkout' %}">Proceed to checkout</a>
                                     </div>

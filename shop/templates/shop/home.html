@@ -180,7 +180,7 @@
                       <a href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="left"
                          title="View Detail"><i class="icon-magnifier"></i></a>
                     </li>
-                    <li><a href="{% url 'wishlist' %}" data-toggle="tooltip" data-placement="left"
+                    <li><a href="{% url 'toggle-wishlist' item.pk %}" data-toggle="tooltip" data-placement="left"
                            title="Add To Wishlist"><i
                         class="icon-heart"></i></a>
                     </li>
@@ -268,7 +268,7 @@
                         href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="left"
                         title="View Detail"><i class="icon-magnifier"></i></a>
                     </li>
-                    <li><a href="{% url 'wishlist' %}" data-toggle="tooltip" data-placement="left"
+                    <li><a href="{% url 'toggle-wishlist' item.pk %}" data-toggle="tooltip" data-placement="left"
                            title="Add To Wishlist"><i
                         class="icon-heart"></i></a>
                     </li>

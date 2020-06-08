@@ -40,15 +40,6 @@
                         <li><a href="{% url 'search' %}?q=Merchandise">Merchandise</a></li>
                       </ul>
                     </li>
-                    <li><span class="megamenu-title">Shop Related Pages</span>
-                      <ul>
-                        <li><a href="my-account.html">My Account</a></li>
-                        <li><a href="{% url 'account_login' %}">Login | Register</a></li>
-                        <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
-                        <li><a href="{% url 'cart' %}">Cart</a></li>
-                        <li><a href="{% url 'checkout' %}">Checkout</a></li>
-                      </ul>
-                    </li>
                   </ul>
 
                 </div>
@@ -83,7 +74,11 @@
             <li class="dropdown-holder user-setting_wrap"><a href="javascript:void(0)"><i
                 class="zmdi zmdi-account-o"></i></a>
               <ul class="quicky-dropdown">
-                <li class="position-relative"><a href="my-account.html">My Account</a></li>
+                <li class="position-relative"><a href="{% url 'accounts' %}">My Account</a></li>
+                <li class="position-relative"><a href="{% url 'wishlist' %}">Wishlist</a></li>
+                <li class="position-relative"><a href="{% url 'cart' %}">Cart</a></li>
+                <li class="position-relative"><a href="{% url 'checkout' %}">Checkout</a></li>
+                <li class="position-relative"><a href="{% url 'transaction' %}">Transaction</a></li>
                 <li class="position-relative"><a href="{% url 'account_logout' %}">Logout</a>
               </ul>
             </li>

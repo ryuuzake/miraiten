@@ -80,9 +80,17 @@ class Order(models.Model):
         return total
 
 
+class WishlistItem(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Wishlist of {self.user.username} : {self.item.name}"
+
+
 class Wishlist(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    items = models.ManyToManyField(OrderItem)
+    items = models.ManyToManyField(WishlistItem)
 
     def __str__(self):
         return f"Wishlist of {self.user.username}"

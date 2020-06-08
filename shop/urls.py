@@ -4,6 +4,7 @@ from .views import (
     ItemView,
     SearchView,
     WishlistView,
+    toggle_wishlist,
     CartView,
     add_to_cart,
     delete_from_cart,
@@ -12,6 +13,7 @@ from .views import (
     TransactionView,
     TransactionDetailView,
     PaymentView,
+    AccountView,
 )
 
 urlpatterns = [
@@ -19,6 +21,7 @@ urlpatterns = [
     path('item/<int:pk>/<str:slug>/', ItemView.as_view(), name="item"),
     path('search', SearchView.as_view(), name="search"),
     path('wishlist/', WishlistView.as_view(), name="wishlist"),
+    path('wishlist/<int:pk>/', toggle_wishlist, name="toggle-wishlist"),
     path('cart/', CartView.as_view(), name="cart"),
     path('cart/add/<int:pk>/', add_to_cart, name="add-to-cart"),
     path('cart/remove/<int:pk>/', remove_single_from_cart, name="remove-single-from-cart"),
@@ -27,4 +30,5 @@ urlpatterns = [
     path('transaction/', TransactionView.as_view(), name="transaction"),
     path('transaction/<int:pk>/', TransactionDetailView.as_view(), name="transaction-detail"),
     path('payment/', PaymentView.as_view(), name="payment"),
+    path('accounts/', AccountView.as_view(), name="accounts"),
 ]

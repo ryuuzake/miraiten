@@ -10,7 +10,7 @@ from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.base import TemplateView
 
 from .forms import SearchForm, ShippingForm
-from .models import Item, Order, OrderItem, Wishlist, Address
+from .models import Item, Order, OrderItem, Wishlist, Address, WishlistItem
 
 
 class HomeView(TemplateView):
@@ -42,6 +42,20 @@ class WishlistView(LoginRequiredMixin, ListView):
             return Wishlist.objects.get(user=self.request.user)
         except Wishlist.DoesNotExist:
             return Wishlist.objects.none()
+
+
+@login_required
+def toggle_wishlist(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    wishlist_item, _ = WishlistItem.objects.get_or_create(item=item, user=request.user)
+    wishlist, _ = Wishlist.objects.get_or_create(user=request.user)
+    if wishlist.items.filter(item__pk=item.pk).exists():
+        messages.info(request, "This item was deleted to your wishlist", fail_silently=True)
+        wishlist.items.remove(wishlist_item)
+    else:
+        messages.info(request, "This item was added from your wishlist", fail_silently=True)
+        wishlist.items.add(wishlist_item)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class SearchView(ListView):
@@ -144,6 +158,13 @@ class TransactionDetailView(DetailView):
 
 class PaymentView(LoginRequiredMixin, TemplateView):
     template_name = 'shop/payment.html'
+
+
+class AccountView(LoginRequiredMixin, ListView):
+    template_name = 'shop/account.html'
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
 
 
 @login_required

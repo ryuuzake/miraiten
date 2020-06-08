@@ -2,70 +2,61 @@
 
 {% load humanize %}
 
-{% block head_title %}Wishlist | Miraiten Shop{% endblock %}
+{% block head_title %}Wishlist || Miraiten{% endblock %}
 
 {% block content %}
-<body class="template-color-5 font-family-02">
-
-    <div class="main-wrapper wrapper-boxed_layout">
-
-        <!-- Begin Loading Area -->
-        <div class="loading">
-            <div class="text-center middle">
-                <span class="loader">
-            <span class="loader-inner"></span>
-                </span>
-            </div>
+<!-- Begin Quicky's Breadcrumb Area -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="breadcrumb-content">
+            <h2>Your Wishlist</h2>
         </div>
-        <!-- Loading Area End Here -->
+    </div>
+</div>
+<!-- Quicky's Breadcrumb Area End Here -->
 
-        <!-- Begin Quicky's Breadcrumb Area -->
-        <div class="breadcrumb-area">
-            <div class="container">
-                <div class="breadcrumb-content">
-                    <h2>Your Wishlist</h2>
-                </div>
-            </div>
-        </div>
-        <!-- Quicky's Breadcrumb Area End Here -->
-
-        <!--Begin Quicky's Wishlist Area -->
-        <div class="quicky-wishlist_area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <form action="javascript:void(0)">
-                            <div class="table-content table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="quicky-product_remove">remove</th>
-                                            <th class="quicky-product-thumbnail">images</th>
-                                            <th class="cart-product-name">Product</th>
-                                            <th class="quicky-product-price">Unit Price</th>
-                                            <th class="quicky-cart_btn">add to cart</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for order_item in object_list.items.all %}
-                                        <tr>
-                                            <td class="quicky-product_remove"><a href="{% url 'delete-from-cart' order_item.item.pk %}"><i class="zmdi zmdi-close"
-                                                title="Remove"></i></a></td>
-                                            <td class="quicky-product-thumbnail"><a href="javascript:void(0)"><img src="{{ order_item.item.image }}" alt="Quicky's Wishlist Thumbnail"></a>
-                                            </td>
-                                            <td class="quicky-product-name">{{ order_item.item.name }}</td>
-                                            <td class="quicky-product-price">{{ order_item.item.price }}</td>
-                                            <td class="quicky-cart_btn"><a href="javascript:void(0)">add to cart</a></td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
+<!--Begin Quicky's Wishlist Area -->
+<div class="quicky-wishlist_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="javascript:void(0)">
+                    <div class="table-content table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="quicky-product_remove">remove</th>
+                                    <th class="quicky-product-thumbnail">images</th>
+                                    <th class="cart-product-name">Product</th>
+                                    <th class="quicky-product-price">Unit Price</th>
+                                    <th class="quicky-cart_btn">add to cart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order_item in object_list.items.all %}
+                                <tr>
+                                    <td class="quicky-product_remove"><a href="{% url 'delete-from-cart' order_item.item.pk %}"><i class="zmdi zmdi-close"
+                                        title="Remove"></i></a></td>
+                                    <td class="quicky-product-thumbnail">
+                                        <a href="{% url 'item' order_item.item.pk order_item.item.slug %}">
+                                            <img src="{{ order_item.item.image }}" alt="{{ order_item.item.name }}" width="105" height="105">
+                                        </a>
+                                    </td>
+                                    <td class="quicky-product-name">
+                                        <a href="{% url 'item' order_item.item.pk order_item.item.slug %}">
+                                            {{ order_item.item.name }}
+                                        </a>
+                                    </td>
+                                    <td class="quicky-product-price">Rp {{ order_item.item.price|floatformat|intcomma }}</td>
+                                    <td class="quicky-cart_btn"><a href="{% url 'add-to-cart' order_item.item.pk %}">add to cart</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-</body>
-</html>
+    </div>
+</div>
 {% endblock %}

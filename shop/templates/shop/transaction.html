@@ -39,23 +39,35 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="quicky-product-thumbnail">Order ID</th>
-                                            <th class="quicky-product-price">Unit Price</th>
-                                            <th class="quicky-product-stock-status">Payment Status</th>
-                                            <th class="quicky-product-shipping-status">Shipping</th>
-                                            <th class="quicky-product-received-status">Received</th>
-                                            <th class="quicky-product-list">Item Detail</th>
+                                            <th class="quicky-product-thumbnail">ORDER ID</th>
+                                            <th class="quicky-product-price">DATE</th>
+                                            <th class="quicky-product-stock-status">PAYMENT</th>
+                                            <th class="quicky-product-shipping-status">SHIPPING</th>
+                                            <th class="quicky-product-received-status">RECEIVED</th>
+                                            <th class="quicky-product-list">TOTAL</th>
+                                            <th class="quicky-product-list"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for order in object_list %}
                                         <tr>
-                                            <td class="quicky-product-thumbnail">{{ order.pk }}</td>
-                                            <td class="quicky-product-price"><span class="amount"></span>{{ order.get_total }}</span></td>
+                                            <td class="quicky-product-thumbnail">
+                                                <a href="{% url 'transaction-detail' order.pk %}">#{{ order.pk }}</a>
+                                            </td>
+                                            <td class="quicky-product-price"><span class="amount"></span>{{ order.ordered_date }}</span></td>
                                             <td class="quicky-product-stock-status"><span class="in-stock">{{ order.payment }}</span></td>
                                             <td class="quicky-product-stock-status">{{ order.being_delivered }}</td>
                                             <td class="quicky-product-stock-status">{{ order.received }}</td>
-                                            <td class="quicky-product-stock-status"><a href="{% url 'transaction-detail' order.pk %}">Detail</a></td>
+                                            <td class="quicky-product-price">
+                                                <span class="amount">
+                                                    Rp {{ order.get_total|floatformat|intcomma }} of {{ order.items.count }} items
+                                                </span>
+                                            </td>
+                                            <td class="quicky-product-stock-status">
+                                                <a href="{% url 'transaction-detail' order.pk %}" class="quicky-btn-2 quicky-btn_sm">
+                                                    <span>View</span>
+                                                </a>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

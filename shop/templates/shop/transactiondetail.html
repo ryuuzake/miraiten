@@ -47,13 +47,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for order_id in object.items.all %}
+                                        {% for order_item in object.items.all %}
                                         <tr>
-                                            <td class="quicky-product-thumbnail"><a href="javascript:void(0)"><img src="{{ order_id.item.image }}" alt="Quicky's Cart Thumbnail" width="105" height="105"></a></td>
-                                            <td class="quicky-product-name">{{ order_id.item.name }}</td>
-                                            <td class="quicky-product-price">{{ order_id.item.price }}</td>
-                                            <td class="quicky-product-name">{{ order_id.quantity }}</td>
-                                            <td class="product-subtotal"><span class="amount">{{ order_id.get_total_item_price }}</span></td>
+                                            <td class="quicky-product-thumbnail">
+                                                <a href="{% url 'item' order_item.item.pk order_item.item.slug %}">
+                                                    <img src="{{ order_item.item.image }}" alt="{{ order_item.item.name }}" width="105" height="105">
+                                                </a>
+                                            </td>
+                                            <td class="quicky-product-name">
+                                                <a href="{% url 'item' order_item.item.pk order_item.item.slug %}">
+                                                    {{ order_item.item.name }}
+                                                </a>
+                                            </td>
+                                            <td class="quicky-product-price">Rp {{ order_item.item.price|floatformat|intcomma }}</td>
+                                            <td class="quicky-product-name">{{ order_item.quantity }}</td>
+                                            <td class="product-subtotal">
+                                                <span class="amount">
+                                                    Rp {{ order_item.get_total_item_price|floatformat|intcomma }}
+                                                </span>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -64,7 +76,7 @@
                                     <div class="cart-page-total">
                                         <h2>Totals</h2>
                                         <ul>
-                                            <li>Total <span>{{ object.get_total }}</span></li>
+                                            <li>Total <span>Rp {{ object.get_total|floatformat|intcomma }}</span></li>
                                         </ul>
                                         <a href="{% url 'checkout' %}">Proceed to checkout</a>
                                     </div>

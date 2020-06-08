@@ -96,7 +96,7 @@
                           href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="top"
                           title="View Detail"><i class="icon-magnifier"></i></a>
                       </li>
-                      <li><a href="{% url 'wishlist' %}" data-toggle="tooltip" data-placement="top"
+                      <li><a href="{% url 'toggle-wishlist' item.pk %}" data-toggle="tooltip" data-placement="top"
                              title="Add To Wishlist"><i class="icon-heart"></i></a>
                       </li>
                       <li><a href="{% url 'add-to-cart' item.pk %}" data-toggle="tooltip" data-placement="top"
@@ -162,7 +162,7 @@
                           href="{% url 'item' item.pk item.slug %}" data-toggle="tooltip" data-placement="top"
                           title="View Detail"><i class="icon-magnifier"></i></a>
                       </li>
-                      <li><a href="{% url 'wishlist'  %}" data-toggle="tooltip" data-placement="top"
+                      <li><a href="{% url 'toggle-wishlist' item.pk  %}" data-toggle="tooltip" data-placement="top"
                              title="Add To Wishlist"><i class="icon-heart"></i></a>
                       </li>
                       <li><a href="{% url 'add-to-cart' item.pk %}" data-toggle="tooltip" data-placement="top"
